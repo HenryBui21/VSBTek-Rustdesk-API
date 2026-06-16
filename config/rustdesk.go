@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
@@ -28,15 +29,18 @@ func (rd *Rustdesk) LoadKeyFile() {
 	// Load key file
 	if rd.Key != "" {
 		rd.Key = strings.TrimSpace(rd.Key)
+		fmt.Printf("[DEBUG] Loaded RustDesk Key from config/env: '%s'\n", rd.Key)
 		return
 	}
 	if rd.KeyFile != "" {
 		// Load key from file
 		b, err := os.ReadFile(rd.KeyFile)
 		if err != nil {
+			fmt.Printf("[DEBUG] Failed to read RustDesk KeyFile '%s': %v\n", rd.KeyFile, err)
 			return
 		}
 		rd.Key = strings.TrimSpace(string(b))
+		fmt.Printf("[DEBUG] Loaded RustDesk Key from file '%s': '%s'\n", rd.KeyFile, rd.Key)
 		return
 	}
 }
