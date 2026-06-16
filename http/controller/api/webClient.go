@@ -33,16 +33,17 @@ func (i *WebClient) ServerConfig(c *gin.Context) {
 		peers[ab.Id] = pp
 	}
 	c.JSON(200, gin.H{
-		"id_server": global.Config.Rustdesk.IdServer,
-		"key":       global.Config.Rustdesk.Key,
-		"peers":     peers,
+		"id_server":    global.Config.Rustdesk.IdServer,
+		"relay_server": global.Config.Rustdesk.RelayServer,
+		"key":          global.Config.Rustdesk.Key,
+		"peers":        peers,
 	})
 }
 
 // SharedPeer 分享的peer
 // @Tags WEBCLIENT
-// @Summary 分享的peer
-// @Description 分享的peer
+// @Summary 分享 của peer
+// @Description 分享 của peer
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} response.Response
@@ -62,7 +63,7 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 		return
 	}
 	if sr.Expire != 0 {
-		//判断是否过期,created_at + expire > now
+		// phán đoán xem đã hết hạn chưa, created_at + expire > now
 		ca := time.Time(sr.CreatedAt)
 		if ca.Add(time.Second * time.Duration(sr.Expire)).Before(time.Now()) {
 			response.Fail(c, 101, "share expired")
@@ -80,9 +81,10 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 	pp.Info.Username = ab.Username
 	pp.Info.Hostname = ab.Hostname
 	response.Success(c, gin.H{
-		"id_server": global.Config.Rustdesk.IdServer,
-		"key":       global.Config.Rustdesk.Key,
-		"peer":      pp,
+		"id_server":    global.Config.Rustdesk.IdServer,
+		"relay_server": global.Config.Rustdesk.RelayServer,
+		"key":          global.Config.Rustdesk.Key,
+		"peer":         pp,
 	})
 }
 
@@ -98,7 +100,8 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 // @Security token
 func (i *WebClient) ServerConfigV2(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"id_server": global.Config.Rustdesk.IdServer,
-		"key":       global.Config.Rustdesk.Key,
+		"id_server":    global.Config.Rustdesk.IdServer,
+		"relay_server": global.Config.Rustdesk.RelayServer,
+		"key":          global.Config.Rustdesk.Key,
 	})
 }
